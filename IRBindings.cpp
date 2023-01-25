@@ -18,6 +18,7 @@
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
+#include "llvm/IR/Constants.h"
 
 using namespace llvm;
 
@@ -71,5 +72,9 @@ LLVMDebugLocMetadata LLVMGoGetCurrentDebugLocation(LLVMBuilderRef Bref) {
     InlinedAt == nullptr ? nullptr : wrap(InlinedAt->getRawInlinedAt()),
   };
   return md;
+}
+
+LLVMValueRef LLVMConstAggregateZero(LLVMTypeRef ty) {
+    return wrap(llvm::ConstantAggregateZero::get(unwrap(ty)));
 }
 

@@ -49,6 +49,8 @@ void LLVMGoSetCurrentDebugLocation(LLVMBuilderRef Bref, unsigned Line,
 
 struct LLVMDebugLocMetadata LLVMGoGetCurrentDebugLocation(LLVMBuilderRef Bref);
 
+LLVMValueRef LLVMConstAggregateZero(LLVMTypeRef ty);
+
 #ifdef __cplusplus
 }
 

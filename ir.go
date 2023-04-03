@@ -801,7 +801,7 @@ func (v Value) SetOperand(i int, op Value) { C.LLVMSetOperand(v.C, C.unsigned(i)
 func (v Value) OperandsCount() int         { return int(C.LLVMGetNumOperands(v.C)) }
 
 // Operations on constants of any type
-func ConstNull(t Type) (v Value)        { v.C = C.LLVMConstNull(t.C); return }
+func ConstZero(t Type) (v Value)        { v.C = C.LLVMConstNull(t.C); return }
 func ConstAllOnes(t Type) (v Value)     { v.C = C.LLVMConstAllOnes(t.C); return }
 func Undef(t Type) (v Value)            { v.C = C.LLVMGetUndef(t.C); return }
 func (v Value) IsConstant() bool        { return C.LLVMIsConstant(v.C) != 0 }
@@ -892,6 +892,10 @@ func ConstStruct(constVals []Value, packed bool) (v Value) {
 func ConstVector(scalarConstVals []Value, packed bool) (v Value) {
 	ptr, nvals := llvmValueRefs(scalarConstVals)
 	v.C = C.LLVMConstVector(ptr, nvals)
+	return
+}
+func ConstAggregateZero(t Type) (v Value) {
+	v.C = C.LLVMConstAggregateZero(t.C)
 	return
 }
 

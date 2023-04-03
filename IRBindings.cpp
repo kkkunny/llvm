@@ -70,3 +70,7 @@ LLVMDebugLocMetadata LLVMGoGetCurrentDebugLocation(LLVMBuilderRef Bref) {
   return md;
 }
 
+LLVMValueRef LLVMConstAggregateZero(LLVMTypeRef ty) {
+    return wrap(llvm::ConstantAggregateZero::get(unwrap(ty)));
+}
+

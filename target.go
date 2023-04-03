@@ -1,14 +1,14 @@
-// ===- target.go - Bindings for target ------------------------------------===//
+//===- target.go - Bindings for target ------------------------------------===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
-// ===----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 //
 // This file defines bindings for the target component.
 //
-// ===----------------------------------------------------------------------===//
+//===----------------------------------------------------------------------===//
 
 package llvm
 
@@ -19,10 +19,8 @@ package llvm
 #include <stdlib.h>
 */
 import "C"
-import (
-	"errors"
-	"unsafe"
-)
+import "unsafe"
+import "errors"
 
 type (
 	TargetData struct {
@@ -110,9 +108,9 @@ func InitializeNativeAsmPrinter() error {
 	return nil
 }
 
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // llvm.TargetData
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 // Creates target data from a target layout string.
 // See the constructor llvm::TargetData::TargetData.
@@ -203,9 +201,9 @@ func (td TargetData) ElementOffset(t Type, element int) uint64 {
 // See the destructor llvm::TargetData::~TargetData.
 func (td TargetData) Dispose() { C.LLVMDisposeTargetData(td.C) }
 
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // llvm.Target
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 func FirstTarget() Target {
 	return Target{C.LLVMGetFirstTarget()}
@@ -235,9 +233,9 @@ func (t Target) Description() string {
 	return C.GoString(C.LLVMGetTargetDescription(t.C))
 }
 
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 // llvm.TargetMachine
-// -------------------------------------------------------------------------
+//-------------------------------------------------------------------------
 
 // CreateTargetMachine creates a new TargetMachine.
 func (t Target) CreateTargetMachine(Triple string, CPU string, Features string,
@@ -279,19 +277,6 @@ func (tm TargetMachine) EmitToMemoryBuffer(m Module, ft CodeGenFileType) (Memory
 		return MemoryBuffer{}, err
 	}
 	return mb, nil
-}
-
-func (tm TargetMachine) EmitToFile(m Module, path string, ft CodeGenFileType) error {
-	var errstr *C.char
-	cpath := C.CString(path)
-	defer C.free(unsafe.Pointer(cpath))
-	fail := C.LLVMTargetMachineEmitToFile(tm.C, m.C, cpath, C.LLVMCodeGenFileType(ft), &errstr)
-	if fail != 0 {
-		err := errors.New(C.GoString(errstr))
-		C.free(unsafe.Pointer(errstr))
-		return err
-	}
-	return nil
 }
 
 func (tm TargetMachine) AddAnalysisPasses(pm PassManager) {

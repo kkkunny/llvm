@@ -13,7 +13,7 @@ namespace llvm {
 namespace Intrinsic {
 enum X86Intrinsics : unsigned {
 // Enum values for intrinsics
-    x86_3dnow_pavgusb = 9340,                         // llvm.x86.3dnow.pavgusb
+    x86_3dnow_pavgusb = 9651,                         // llvm.x86.3dnow.pavgusb
     x86_3dnow_pf2id,                           // llvm.x86.3dnow.pf2id
     x86_3dnow_pfacc,                           // llvm.x86.3dnow.pfacc
     x86_3dnow_pfadd,                           // llvm.x86.3dnow.pfadd
@@ -61,6 +61,9 @@ enum X86Intrinsics : unsigned {
     x86_aesni_aesenclast_512,                  // llvm.x86.aesni.aesenclast.512
     x86_aesni_aesimc,                          // llvm.x86.aesni.aesimc
     x86_aesni_aeskeygenassist,                 // llvm.x86.aesni.aeskeygenassist
+    x86_atomic_btc,                            // llvm.x86.atomic.btc
+    x86_atomic_btr,                            // llvm.x86.atomic.btr
+    x86_atomic_bts,                            // llvm.x86.atomic.bts
     x86_avx_addsub_pd_256,                     // llvm.x86.avx.addsub.pd.256
     x86_avx_addsub_ps_256,                     // llvm.x86.avx.addsub.ps.256
     x86_avx_blendv_pd_256,                     // llvm.x86.avx.blendv.pd.256
@@ -1067,6 +1070,7 @@ enum X86Intrinsics : unsigned {
     x86_rdpid,                                 // llvm.x86.rdpid
     x86_rdpkru,                                // llvm.x86.rdpkru
     x86_rdpmc,                                 // llvm.x86.rdpmc
+    x86_rdpru,                                 // llvm.x86.rdpru
     x86_rdrand_16,                             // llvm.x86.rdrand.16
     x86_rdrand_32,                             // llvm.x86.rdrand.32
     x86_rdrand_64,                             // llvm.x86.rdrand.64

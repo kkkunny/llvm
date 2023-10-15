@@ -1,4 +1,4 @@
-//===- LowerAtomic.cpp - Lower atomic intrinsics ----------------*- C++ -*-===//
+//===- LowerAtomic.h - Lower atomic intrinsics ------------------*- C++ -*-===//
 //
 // Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 // See https://llvm.org/LICENSE.txt for license information.
@@ -11,25 +11,27 @@
 ///
 //===----------------------------------------------------------------------===//
 
-#ifndef LLVM_TRANSFORMS_SCALAR_LOWERATOMIC_H
-#define LLVM_TRANSFORMS_SCALAR_LOWERATOMIC_H
+#ifndef LLVM_TRANSFORMS_UTILS_LOWERATOMIC_H
+#define LLVM_TRANSFORMS_UTILS_LOWERATOMIC_H
 
-#include "llvm/IR/PassManager.h"
+#include "llvm/IR/Instructions.h"
 
 namespace llvm {
 
-/// A pass that lowers atomic intrinsic into non-atomic intrinsics.
-class LowerAtomicPass : public PassInfoMixin<LowerAtomicPass> {
-public:
-  PreservedAnalyses run(Function &F, FunctionAnalysisManager &);
-  static bool isRequired() { return true; }
-};
+class IRBuilderBase;
 
-class AtomicRMWInst;
+/// Convert the given Cmpxchg into primitive load and compare.
+bool lowerAtomicCmpXchgInst(AtomicCmpXchgInst *CXI);
+
 /// Convert the given RMWI into primitive load and stores,
 /// assuming that doing so is legal. Return true if the lowering
 /// succeeds.
 bool lowerAtomicRMWInst(AtomicRMWInst *RMWI);
+
+/// Emit IR to implement the given atomicrmw operation on values in registers,
+/// returning the new value.
+Value *buildAtomicRMWValue(AtomicRMWInst::BinOp Op, IRBuilderBase &Builder,
+                           Value *Loaded, Value *Inc);
 }
 
-#endif // LLVM_TRANSFORMS_SCALAR_LOWERATOMIC_H
+#endif // LLVM_TRANSFORMS_UTILS_LOWERATOMIC_H

@@ -13,13 +13,15 @@ namespace llvm {
 namespace Intrinsic {
 enum WASMIntrinsics : unsigned {
 // Enum values for intrinsics
-    wasm_alltrue = 9286,                              // llvm.wasm.alltrue
+    wasm_alltrue = 9592,                              // llvm.wasm.alltrue
     wasm_anytrue,                              // llvm.wasm.anytrue
     wasm_avgr_unsigned,                        // llvm.wasm.avgr.unsigned
     wasm_bitmask,                              // llvm.wasm.bitmask
     wasm_bitselect,                            // llvm.wasm.bitselect
     wasm_catch,                                // llvm.wasm.catch
     wasm_dot,                                  // llvm.wasm.dot
+    wasm_dot_i8x16_i7x16_add_signed,           // llvm.wasm.dot.i8x16.i7x16.add.signed
+    wasm_dot_i8x16_i7x16_signed,               // llvm.wasm.dot.i8x16.i7x16.signed
     wasm_extadd_pairwise_signed,               // llvm.wasm.extadd.pairwise.signed
     wasm_extadd_pairwise_unsigned,             // llvm.wasm.extadd.pairwise.unsigned
     wasm_fma,                                  // llvm.wasm.fma
@@ -39,15 +41,18 @@ enum WASMIntrinsics : unsigned {
     wasm_pmax,                                 // llvm.wasm.pmax
     wasm_pmin,                                 // llvm.wasm.pmin
     wasm_q15mulr_sat_signed,                   // llvm.wasm.q15mulr.sat.signed
+    wasm_ref_is_null_extern,                   // llvm.wasm.ref.is_null.extern
+    wasm_ref_is_null_func,                     // llvm.wasm.ref.is_null.func
     wasm_ref_null_extern,                      // llvm.wasm.ref.null.extern
     wasm_ref_null_func,                        // llvm.wasm.ref.null.func
     wasm_relaxed_max,                          // llvm.wasm.relaxed.max
     wasm_relaxed_min,                          // llvm.wasm.relaxed.min
+    wasm_relaxed_q15mulr_signed,               // llvm.wasm.relaxed.q15mulr.signed
     wasm_relaxed_swizzle,                      // llvm.wasm.relaxed.swizzle
     wasm_relaxed_trunc_signed,                 // llvm.wasm.relaxed.trunc.signed
+    wasm_relaxed_trunc_signed_zero,            // llvm.wasm.relaxed.trunc.signed.zero
     wasm_relaxed_trunc_unsigned,               // llvm.wasm.relaxed.trunc.unsigned
-    wasm_relaxed_trunc_zero_signed,            // llvm.wasm.relaxed.trunc.zero.signed
-    wasm_relaxed_trunc_zero_unsigned,          // llvm.wasm.relaxed.trunc.zero.unsigned
+    wasm_relaxed_trunc_unsigned_zero,          // llvm.wasm.relaxed.trunc.unsigned.zero
     wasm_rethrow,                              // llvm.wasm.rethrow
     wasm_shuffle,                              // llvm.wasm.shuffle
     wasm_sub_sat_signed,                       // llvm.wasm.sub.sat.signed

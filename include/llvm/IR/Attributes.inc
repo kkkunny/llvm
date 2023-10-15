@@ -8,12 +8,15 @@
 #define ATTRIBUTE_ENUM(FIRST, SECOND) ATTRIBUTE_ALL(FIRST, SECOND)
 #endif
 
+ATTRIBUTE_ENUM(AllocAlign,allocalign)
+ATTRIBUTE_ENUM(AllocatedPointer,allocptr)
 ATTRIBUTE_ENUM(AlwaysInline,alwaysinline)
 ATTRIBUTE_ENUM(ArgMemOnly,argmemonly)
 ATTRIBUTE_ENUM(Builtin,builtin)
 ATTRIBUTE_ENUM(Cold,cold)
 ATTRIBUTE_ENUM(Convergent,convergent)
 ATTRIBUTE_ENUM(DisableSanitizerInstrumentation,disable_sanitizer_instrumentation)
+ATTRIBUTE_ENUM(FnRetThunkExtern,fn_ret_thunk_extern)
 ATTRIBUTE_ENUM(Hot,hot)
 ATTRIBUTE_ENUM(ImmArg,immarg)
 ATTRIBUTE_ENUM(InReg,inreg)
@@ -39,6 +42,7 @@ ATTRIBUTE_ENUM(NoProfile,noprofile)
 ATTRIBUTE_ENUM(NoRecurse,norecurse)
 ATTRIBUTE_ENUM(NoRedZone,noredzone)
 ATTRIBUTE_ENUM(NoReturn,noreturn)
+ATTRIBUTE_ENUM(NoSanitizeBounds,nosanitize_bounds)
 ATTRIBUTE_ENUM(NoSanitizeCoverage,nosanitize_coverage)
 ATTRIBUTE_ENUM(NoSync,nosync)
 ATTRIBUTE_ENUM(NoUndef,noundef)
@@ -49,6 +53,7 @@ ATTRIBUTE_ENUM(NullPointerIsValid,null_pointer_is_valid)
 ATTRIBUTE_ENUM(OptForFuzzing,optforfuzzing)
 ATTRIBUTE_ENUM(OptimizeForSize,optsize)
 ATTRIBUTE_ENUM(OptimizeNone,optnone)
+ATTRIBUTE_ENUM(PresplitCoroutine,presplitcoroutine)
 ATTRIBUTE_ENUM(ReadNone,readnone)
 ATTRIBUTE_ENUM(ReadOnly,readonly)
 ATTRIBUTE_ENUM(Returned,returned)
@@ -70,7 +75,6 @@ ATTRIBUTE_ENUM(StrictFP,strictfp)
 ATTRIBUTE_ENUM(SwiftAsync,swiftasync)
 ATTRIBUTE_ENUM(SwiftError,swifterror)
 ATTRIBUTE_ENUM(SwiftSelf,swiftself)
-ATTRIBUTE_ENUM(UWTable,uwtable)
 ATTRIBUTE_ENUM(WillReturn,willreturn)
 ATTRIBUTE_ENUM(WriteOnly,writeonly)
 ATTRIBUTE_ENUM(ZExt,zeroext)
@@ -81,10 +85,12 @@ ATTRIBUTE_ENUM(InAlloca,inalloca)
 ATTRIBUTE_ENUM(Preallocated,preallocated)
 ATTRIBUTE_ENUM(StructRet,sret)
 ATTRIBUTE_ENUM(Alignment,align)
+ATTRIBUTE_ENUM(AllocKind,allockind)
 ATTRIBUTE_ENUM(AllocSize,allocsize)
 ATTRIBUTE_ENUM(Dereferenceable,dereferenceable)
 ATTRIBUTE_ENUM(DereferenceableOrNull,dereferenceable_or_null)
 ATTRIBUTE_ENUM(StackAlignment,alignstack)
+ATTRIBUTE_ENUM(UWTable,uwtable)
 ATTRIBUTE_ENUM(VScaleRange,vscale_range)
 #undef ATTRIBUTE_ENUM
 
@@ -92,7 +98,7 @@ ATTRIBUTE_ENUM(VScaleRange,vscale_range)
 #define ATTRIBUTE_STRBOOL(FIRST, SECOND) ATTRIBUTE_ALL(FIRST, SECOND)
 #endif
 
-ATTRIBUTE_STRBOOL(AMDGPUUnsafeFPAtomics,amdgpu-unsafe-fp-atomics)
+ATTRIBUTE_STRBOOL(ApproxFuncFPMath,approx-func-fp-math)
 ATTRIBUTE_STRBOOL(LessPreciseFPMAD,less-precise-fpmad)
 ATTRIBUTE_STRBOOL(NoInfsFPMath,no-infs-fp-math)
 ATTRIBUTE_STRBOOL(NoInlineLineTables,no-inline-line-tables)
@@ -110,89 +116,95 @@ ATTRIBUTE_STRBOOL(UseSampleProfile,use-sample-profile)
 #ifdef GET_ATTR_ENUM
 #undef GET_ATTR_ENUM
 FirstEnumAttr = 1,
-AlwaysInline = 1,
-ArgMemOnly = 2,
-Builtin = 3,
-Cold = 4,
-Convergent = 5,
-DisableSanitizerInstrumentation = 6,
-Hot = 7,
-ImmArg = 8,
-InReg = 9,
-InaccessibleMemOnly = 10,
-InaccessibleMemOrArgMemOnly = 11,
-InlineHint = 12,
-JumpTable = 13,
-MinSize = 14,
-MustProgress = 15,
-Naked = 16,
-Nest = 17,
-NoAlias = 18,
-NoBuiltin = 19,
-NoCallback = 20,
-NoCapture = 21,
-NoCfCheck = 22,
-NoDuplicate = 23,
-NoFree = 24,
-NoImplicitFloat = 25,
-NoInline = 26,
-NoMerge = 27,
-NoProfile = 28,
-NoRecurse = 29,
-NoRedZone = 30,
-NoReturn = 31,
-NoSanitizeCoverage = 32,
-NoSync = 33,
-NoUndef = 34,
-NoUnwind = 35,
-NonLazyBind = 36,
-NonNull = 37,
-NullPointerIsValid = 38,
-OptForFuzzing = 39,
-OptimizeForSize = 40,
-OptimizeNone = 41,
-ReadNone = 42,
-ReadOnly = 43,
-Returned = 44,
-ReturnsTwice = 45,
-SExt = 46,
-SafeStack = 47,
-SanitizeAddress = 48,
-SanitizeHWAddress = 49,
-SanitizeMemTag = 50,
-SanitizeMemory = 51,
-SanitizeThread = 52,
-ShadowCallStack = 53,
-Speculatable = 54,
-SpeculativeLoadHardening = 55,
-StackProtect = 56,
-StackProtectReq = 57,
-StackProtectStrong = 58,
-StrictFP = 59,
-SwiftAsync = 60,
-SwiftError = 61,
-SwiftSelf = 62,
-UWTable = 63,
-WillReturn = 64,
-WriteOnly = 65,
-ZExt = 66,
-LastEnumAttr = 66,
-FirstTypeAttr = 67,
-ByRef = 67,
-ByVal = 68,
-ElementType = 69,
-InAlloca = 70,
-Preallocated = 71,
-StructRet = 72,
-LastTypeAttr = 72,
-FirstIntAttr = 73,
-Alignment = 73,
-AllocSize = 74,
-Dereferenceable = 75,
-DereferenceableOrNull = 76,
-StackAlignment = 77,
-VScaleRange = 78,
-LastIntAttr = 78,
+AllocAlign = 1,
+AllocatedPointer = 2,
+AlwaysInline = 3,
+ArgMemOnly = 4,
+Builtin = 5,
+Cold = 6,
+Convergent = 7,
+DisableSanitizerInstrumentation = 8,
+FnRetThunkExtern = 9,
+Hot = 10,
+ImmArg = 11,
+InReg = 12,
+InaccessibleMemOnly = 13,
+InaccessibleMemOrArgMemOnly = 14,
+InlineHint = 15,
+JumpTable = 16,
+MinSize = 17,
+MustProgress = 18,
+Naked = 19,
+Nest = 20,
+NoAlias = 21,
+NoBuiltin = 22,
+NoCallback = 23,
+NoCapture = 24,
+NoCfCheck = 25,
+NoDuplicate = 26,
+NoFree = 27,
+NoImplicitFloat = 28,
+NoInline = 29,
+NoMerge = 30,
+NoProfile = 31,
+NoRecurse = 32,
+NoRedZone = 33,
+NoReturn = 34,
+NoSanitizeBounds = 35,
+NoSanitizeCoverage = 36,
+NoSync = 37,
+NoUndef = 38,
+NoUnwind = 39,
+NonLazyBind = 40,
+NonNull = 41,
+NullPointerIsValid = 42,
+OptForFuzzing = 43,
+OptimizeForSize = 44,
+OptimizeNone = 45,
+PresplitCoroutine = 46,
+ReadNone = 47,
+ReadOnly = 48,
+Returned = 49,
+ReturnsTwice = 50,
+SExt = 51,
+SafeStack = 52,
+SanitizeAddress = 53,
+SanitizeHWAddress = 54,
+SanitizeMemTag = 55,
+SanitizeMemory = 56,
+SanitizeThread = 57,
+ShadowCallStack = 58,
+Speculatable = 59,
+SpeculativeLoadHardening = 60,
+StackProtect = 61,
+StackProtectReq = 62,
+StackProtectStrong = 63,
+StrictFP = 64,
+SwiftAsync = 65,
+SwiftError = 66,
+SwiftSelf = 67,
+WillReturn = 68,
+WriteOnly = 69,
+ZExt = 70,
+LastEnumAttr = 70,
+FirstTypeAttr = 71,
+ByRef = 71,
+ByVal = 72,
+ElementType = 73,
+InAlloca = 74,
+Preallocated = 75,
+StructRet = 76,
+LastTypeAttr = 76,
+FirstIntAttr = 77,
+Alignment = 77,
+AllocKind = 78,
+AllocSize = 79,
+Dereferenceable = 80,
+DereferenceableOrNull = 81,
+StackAlignment = 82,
+UWTable = 83,
+VScaleRange = 84,
+LastIntAttr = 84,
 #endif
 
 #ifdef GET_ATTR_COMPAT_FUNC
@@ -218,6 +230,7 @@ static inline void mergeFnAttrs(Function &Caller,
                                 const Function &Callee) {
   setAND<NoInfsFPMathAttr>(Caller, Callee);
   setAND<NoNansFPMathAttr>(Caller, Callee);
+  setAND<ApproxFuncFPMathAttr>(Caller, Callee);
   setAND<NoSignedZerosFPMathAttr>(Caller, Callee);
   setAND<UnsafeFPMathAttr>(Caller, Callee);
   setOR<NoImplicitFloatAttr>(Caller, Callee);
@@ -230,7 +243,6 @@ static inline void mergeFnAttrs(Function &Caller,
   adjustMinLegalVectorWidth(Caller, Callee);
   adjustNullPointerValidAttr(Caller, Callee);
   setAND<MustProgressAttr>(Caller, Callee);
-  setAND<AMDGPUUnsafeFPAtomicsAttr>(Caller, Callee);
   setAND<LessPreciseFPMADAttr>(Caller, Callee);
 }
 
@@ -238,6 +250,9 @@ static inline void mergeFnAttrs(Function &Caller,
 #ifdef GET_ATTR_PROP_TABLE
 #undef GET_ATTR_PROP_TABLE
 static const uint8_t AttrPropTable[] = {
+0 | AttributeProperty::ParamAttr,
+0 | AttributeProperty::ParamAttr,
+0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
@@ -271,10 +286,12 @@ static const uint8_t AttrPropTable[] = {
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
+0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::ParamAttr | AttributeProperty::RetAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::ParamAttr | AttributeProperty::RetAttr,
+0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
@@ -301,7 +318,6 @@ static const uint8_t AttrPropTable[] = {
 0 | AttributeProperty::ParamAttr,
 0 | AttributeProperty::ParamAttr,
 0 | AttributeProperty::FnAttr,
-0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr | AttributeProperty::ParamAttr,
 0 | AttributeProperty::ParamAttr | AttributeProperty::RetAttr,
 0 | AttributeProperty::ParamAttr,
@@ -312,9 +328,11 @@ static const uint8_t AttrPropTable[] = {
 0 | AttributeProperty::ParamAttr,
 0 | AttributeProperty::ParamAttr | AttributeProperty::RetAttr,
 0 | AttributeProperty::FnAttr,
+0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::ParamAttr | AttributeProperty::RetAttr,
 0 | AttributeProperty::ParamAttr | AttributeProperty::RetAttr,
 0 | AttributeProperty::FnAttr | AttributeProperty::ParamAttr,
+0 | AttributeProperty::FnAttr,
 0 | AttributeProperty::FnAttr,
 };
 #endif

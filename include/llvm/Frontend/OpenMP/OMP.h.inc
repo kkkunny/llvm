@@ -45,16 +45,22 @@ enum class Directive {
   OMPD_flush,
   OMPD_for,
   OMPD_for_simd,
+  OMPD_masked_taskloop,
+  OMPD_masked_taskloop_simd,
   OMPD_master,
   OMPD_master_taskloop,
   OMPD_master_taskloop_simd,
   OMPD_metadirective,
+  OMPD_nothing,
   OMPD_ordered,
   OMPD_parallel,
   OMPD_parallel_do,
   OMPD_parallel_do_simd,
   OMPD_parallel_for,
   OMPD_parallel_for_simd,
+  OMPD_parallel_masked,
+  OMPD_parallel_masked_taskloop,
+  OMPD_parallel_masked_taskloop_simd,
   OMPD_parallel_master,
   OMPD_parallel_master_taskloop,
   OMPD_parallel_master_taskloop_simd,
@@ -106,9 +112,13 @@ enum class Directive {
   OMPD_interop,
   OMPD_loop,
   OMPD_masked,
+  OMPD_parallel_loop,
+  OMPD_target_parallel_loop,
+  OMPD_target_teams_loop,
+  OMPD_teams_loop,
 };
 
-static constexpr std::size_t Directive_enumSize = 96;
+static constexpr std::size_t Directive_enumSize = 106;
 
 constexpr auto OMPD_allocate = llvm::omp::Directive::OMPD_allocate;
 constexpr auto OMPD_assumes = llvm::omp::Directive::OMPD_assumes;
@@ -145,16 +155,22 @@ constexpr auto OMPD_end_workshare = llvm::omp::Directive::OMPD_end_workshare;
 constexpr auto OMPD_flush = llvm::omp::Directive::OMPD_flush;
 constexpr auto OMPD_for = llvm::omp::Directive::OMPD_for;
 constexpr auto OMPD_for_simd = llvm::omp::Directive::OMPD_for_simd;
+constexpr auto OMPD_masked_taskloop = llvm::omp::Directive::OMPD_masked_taskloop;
+constexpr auto OMPD_masked_taskloop_simd = llvm::omp::Directive::OMPD_masked_taskloop_simd;
 constexpr auto OMPD_master = llvm::omp::Directive::OMPD_master;
 constexpr auto OMPD_master_taskloop = llvm::omp::Directive::OMPD_master_taskloop;
 constexpr auto OMPD_master_taskloop_simd = llvm::omp::Directive::OMPD_master_taskloop_simd;
 constexpr auto OMPD_metadirective = llvm::omp::Directive::OMPD_metadirective;
+constexpr auto OMPD_nothing = llvm::omp::Directive::OMPD_nothing;
 constexpr auto OMPD_ordered = llvm::omp::Directive::OMPD_ordered;
 constexpr auto OMPD_parallel = llvm::omp::Directive::OMPD_parallel;
 constexpr auto OMPD_parallel_do = llvm::omp::Directive::OMPD_parallel_do;
 constexpr auto OMPD_parallel_do_simd = llvm::omp::Directive::OMPD_parallel_do_simd;
 constexpr auto OMPD_parallel_for = llvm::omp::Directive::OMPD_parallel_for;
 constexpr auto OMPD_parallel_for_simd = llvm::omp::Directive::OMPD_parallel_for_simd;
+constexpr auto OMPD_parallel_masked = llvm::omp::Directive::OMPD_parallel_masked;
+constexpr auto OMPD_parallel_masked_taskloop = llvm::omp::Directive::OMPD_parallel_masked_taskloop;
+constexpr auto OMPD_parallel_masked_taskloop_simd = llvm::omp::Directive::OMPD_parallel_masked_taskloop_simd;
 constexpr auto OMPD_parallel_master = llvm::omp::Directive::OMPD_parallel_master;
 constexpr auto OMPD_parallel_master_taskloop = llvm::omp::Directive::OMPD_parallel_master_taskloop;
 constexpr auto OMPD_parallel_master_taskloop_simd = llvm::omp::Directive::OMPD_parallel_master_taskloop_simd;
@@ -206,6 +222,10 @@ constexpr auto OMPD_dispatch = llvm::omp::Directive::OMPD_dispatch;
 constexpr auto OMPD_interop = llvm::omp::Directive::OMPD_interop;
 constexpr auto OMPD_loop = llvm::omp::Directive::OMPD_loop;
 constexpr auto OMPD_masked = llvm::omp::Directive::OMPD_masked;
+constexpr auto OMPD_parallel_loop = llvm::omp::Directive::OMPD_parallel_loop;
+constexpr auto OMPD_target_parallel_loop = llvm::omp::Directive::OMPD_target_parallel_loop;
+constexpr auto OMPD_target_teams_loop = llvm::omp::Directive::OMPD_target_teams_loop;
+constexpr auto OMPD_teams_loop = llvm::omp::Directive::OMPD_teams_loop;
 
 enum class Clause {
   OMPC_acq_rel,
@@ -219,6 +239,7 @@ enum class Clause {
   OMPC_append_args,
   OMPC_atomic_default_mem_order,
   OMPC_bind,
+  OMPC_cancellation_construct_type,
   OMPC_capture,
   OMPC_collapse,
   OMPC_compare,
@@ -242,6 +263,7 @@ enum class Clause {
   OMPC_from,
   OMPC_full,
   OMPC_grainsize,
+  OMPC_has_device_addr,
   OMPC_hint,
   OMPC_if,
   OMPC_in_reduction,
@@ -303,7 +325,7 @@ enum class Clause {
   OMPC_write,
 };
 
-static constexpr std::size_t Clause_enumSize = 93;
+static constexpr std::size_t Clause_enumSize = 95;
 
 constexpr auto OMPC_acq_rel = llvm::omp::Clause::OMPC_acq_rel;
 constexpr auto OMPC_acquire = llvm::omp::Clause::OMPC_acquire;
@@ -316,6 +338,7 @@ constexpr auto OMPC_allocator = llvm::omp::Clause::OMPC_allocator;
 constexpr auto OMPC_append_args = llvm::omp::Clause::OMPC_append_args;
 constexpr auto OMPC_atomic_default_mem_order = llvm::omp::Clause::OMPC_atomic_default_mem_order;
 constexpr auto OMPC_bind = llvm::omp::Clause::OMPC_bind;
+constexpr auto OMPC_cancellation_construct_type = llvm::omp::Clause::OMPC_cancellation_construct_type;
 constexpr auto OMPC_capture = llvm::omp::Clause::OMPC_capture;
 constexpr auto OMPC_collapse = llvm::omp::Clause::OMPC_collapse;
 constexpr auto OMPC_compare = llvm::omp::Clause::OMPC_compare;
@@ -339,6 +362,7 @@ constexpr auto OMPC_flush = llvm::omp::Clause::OMPC_flush;
 constexpr auto OMPC_from = llvm::omp::Clause::OMPC_from;
 constexpr auto OMPC_full = llvm::omp::Clause::OMPC_full;
 constexpr auto OMPC_grainsize = llvm::omp::Clause::OMPC_grainsize;
+constexpr auto OMPC_has_device_addr = llvm::omp::Clause::OMPC_has_device_addr;
 constexpr auto OMPC_hint = llvm::omp::Clause::OMPC_hint;
 constexpr auto OMPC_if = llvm::omp::Clause::OMPC_if;
 constexpr auto OMPC_in_reduction = llvm::omp::Clause::OMPC_in_reduction;
@@ -398,6 +422,20 @@ constexpr auto OMPC_use_device_ptr = llvm::omp::Clause::OMPC_use_device_ptr;
 constexpr auto OMPC_uses_allocators = llvm::omp::Clause::OMPC_uses_allocators;
 constexpr auto OMPC_when = llvm::omp::Clause::OMPC_when;
 constexpr auto OMPC_write = llvm::omp::Clause::OMPC_write;
+
+enum class CancellationConstructType {
+  OMP_CANCELLATION_CONSTRUCT_Parallel=1,
+  OMP_CANCELLATION_CONSTRUCT_Loop=2,
+  OMP_CANCELLATION_CONSTRUCT_Sections=3,
+  OMP_CANCELLATION_CONSTRUCT_Taskgroup=4,
+  OMP_CANCELLATION_CONSTRUCT_None=5,
+};
+
+constexpr auto OMP_CANCELLATION_CONSTRUCT_Parallel = llvm::omp::CancellationConstructType::OMP_CANCELLATION_CONSTRUCT_Parallel;
+constexpr auto OMP_CANCELLATION_CONSTRUCT_Loop = llvm::omp::CancellationConstructType::OMP_CANCELLATION_CONSTRUCT_Loop;
+constexpr auto OMP_CANCELLATION_CONSTRUCT_Sections = llvm::omp::CancellationConstructType::OMP_CANCELLATION_CONSTRUCT_Sections;
+constexpr auto OMP_CANCELLATION_CONSTRUCT_Taskgroup = llvm::omp::CancellationConstructType::OMP_CANCELLATION_CONSTRUCT_Taskgroup;
+constexpr auto OMP_CANCELLATION_CONSTRUCT_None = llvm::omp::CancellationConstructType::OMP_CANCELLATION_CONSTRUCT_None;
 
 enum class MemoryOrderKind {
   OMP_MEMORY_ORDER_SeqCst=1,
@@ -467,6 +505,8 @@ llvm::StringRef getOpenMPClauseName(Clause C);
 /// Return true if \p C is a valid clause for \p D in version \p Version.
 bool isAllowedClauseForDirective(Directive D, Clause C, unsigned Version);
 
+CancellationConstructType getCancellationConstructType(StringRef);
+llvm::StringRef getOpenMPCancellationConstructTypeName(CancellationConstructType);
 MemoryOrderKind getMemoryOrderKind(StringRef);
 llvm::StringRef getOpenMPMemoryOrderKindName(MemoryOrderKind);
 OrderKind getOrderKind(StringRef);

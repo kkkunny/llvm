@@ -7,7 +7,7 @@ package llvm
 
 // #cgo CFLAGS: -I${SRCDIR}/include  -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
 // #cgo CXXFLAGS: -I${SRCDIR}/include -std=c++14   -fno-exceptions -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
-// #cgo LDFLAGS: -lLLVM-14
+// #cgo LDFLAGS: -lLLVM-15
 import "C"
 
 type run_build_sh int

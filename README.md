@@ -1,5 +1,7 @@
 # Go bindings to system LLVM
 
+**Please use [go-llvm](https://github.com/kkkunny/go-llvm) instead**
+
 This library provides bindings to a system-installed LLVM.
 
 Currently supported:
